@@ -1,5 +1,10 @@
 import Layers from './Layers';
-import VectorLayer from './VectorLayer';
-import TileLayer from './TileLayer';
+import Tile from './Tile';
+import Vector from './Vector';
 
-export { Layers, VectorLayer, TileLayer };
+const Layer = {
+  Tile,
+  Vector,
+};
+
+export { Layers, Layer };

@@ -1,4 +1,5 @@
 @import './globals.less';
+@import '~ol/ol.css';
 
 @addon: 'volto-addons';
 @addontype: 'mapBlock';
@@ -7,8 +8,10 @@
 .loadAddonVariables();
 
 .ol-map {
-  min-height: 500px;
-  width: 100%;
+  width: @width;
+  height: @height;
+  min-width: @minWidth;
+  min-height: @minHeight;
 }
 
 .loadAddonOverrides();
