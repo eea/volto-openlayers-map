@@ -8,9 +8,11 @@ if (__CLIENT__) {
     format: require('ol/format'),
     interaction: require('ol/interaction'),
     layer: require('ol/layer'),
-    style: require('ol/style'),
-    source: require('ol/source'),
+    loadingstrategy: require('ol/loadingstrategy'),
     proj: require('ol/proj'),
+    source: require('ol/source'),
+    style: require('ol/style'),
+    tilegrid: require('ol/tilegrid'),
   };
 }
 

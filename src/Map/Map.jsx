@@ -31,6 +31,7 @@ class Map extends React.Component {
   overlays = [];
 
   options = {
+    renderer: undefined,
     keyboardEventTarget: undefined,
     maxTilesLoading: undefined,
     moveTolerance: undefined,
