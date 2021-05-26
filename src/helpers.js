@@ -20,7 +20,7 @@ function getPropsKey(eventName) {
   return (
     'on' +
     eventName
-      .replace(/(\:[a-z])/g, ($1) => $1.toUpperCase())
+      .replace(/(:[a-z])/g, ($1) => $1.toUpperCase())
       .replace(/^[a-z]/, ($1) => $1.toUpperCase())
       .replace(':', '')
   );

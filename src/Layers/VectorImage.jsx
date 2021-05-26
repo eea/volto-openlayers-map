@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapContext } from '../Map';
 import { openlayers } from '../index';
-import { getOptions, getEvents, isEqual } from '../helpers';
+import { getOptions, getEvents } from '../helpers';
 
 const { layer } = openlayers;
 
