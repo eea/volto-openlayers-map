@@ -5,7 +5,7 @@ import { getOptions, getEvents } from '../helpers';
 
 const { layer } = openlayers;
 
-class WebGLPoints extends React.Component {
+class Heatmap extends React.Component {
   layer = undefined;
 
   options = {
@@ -54,7 +54,7 @@ class WebGLPoints extends React.Component {
     if (!map) return;
     let options = getOptions(Object.assign(this.options, this.props));
     let events = getEvents(this.events, this.props);
-    this.layer = new layer.WebGLPoints(options);
+    this.layer = new layer.HeatmapLayer(options);
     map.addLayer(this.layer);
 
     for (let event in events) {
@@ -91,6 +91,6 @@ class WebGLPoints extends React.Component {
   }
 }
 
-WebGLPoints.contextType = MapContext;
+Heatmap.contextType = MapContext;
 
-export default WebGLPoints;
+export default Heatmap;
