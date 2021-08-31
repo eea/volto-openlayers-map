@@ -1,5 +1,4 @@
 import React from 'react';
-import { getOptions } from '../helpers';
 
 /**
  * Implementation of ol/control https://openlayers.org/en/latest/apidoc/module-ol_control.html
@@ -9,24 +8,9 @@ import { getOptions } from '../helpers';
  *   <Controls zoom={false} />
  * </Map>
  */
-class Controls extends React.Component {
-  options = {
-    attribution: undefined,
-    attributionOptions: undefined,
-    rotate: undefined,
-    rotateOptions: undefined,
-    zoom: undefined,
-    zoomOptions: undefined,
-  };
 
-  constructor(props) {
-    super(props);
-    this.options = getOptions(Object.assign(this.options, this.props));
-  }
-
-  render() {
-    return <div>{this.props.children}</div>;
-  }
-}
+const Controls = (props) => {
+  return <>{props.children}</>;
+};
 
 export default Controls;

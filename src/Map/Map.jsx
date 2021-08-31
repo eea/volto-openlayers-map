@@ -2,7 +2,7 @@ import React from 'react';
 import MapContext from './MapContext';
 import { Controls } from '../Controls';
 import { Interactions } from '../Interactions';
-import { openlayers } from '../index';
+import { openlayers } from '..';
 import { getOptions, getEvents, findChild, isEqual } from '../helpers';
 import '../less/map.less';
 
@@ -84,6 +84,8 @@ class Map extends React.Component {
 
     let controls = findChild(this.props.children, Controls) || {};
     let interactions = findChild(this.props.children, Interactions) || {};
+
+    console.log('HERE', controls.props);
 
     options.controls = control.defaults(controls.props).extend(this.controls);
     options.interactions = interaction
