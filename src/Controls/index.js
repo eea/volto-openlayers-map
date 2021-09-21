@@ -1,3 +1,4 @@
 import Controls from './Controls';
+import Control from './Control';
 
-export { Controls };
+export { Controls, Control };

@@ -2,7 +2,7 @@ import React from 'react';
 import MapContext from './MapContext';
 import { Controls } from '../Controls';
 import { Interactions } from '../Interactions';
-import { openlayers } from '../index';
+import { openlayers } from '..';
 import { getOptions, getEvents, findChild, isEqual } from '../helpers';
 import '../less/map.less';
 

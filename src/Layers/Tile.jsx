@@ -1,7 +1,7 @@
 import React from 'react';
-import { MapContext } from '../Map';
-import { openlayers } from '../index';
+import { openlayers } from '..';
 import { getOptions, getEvents } from '../helpers';
+import { withMapContext } from '../hocs';
 
 const { layer, source } = openlayers;
 
@@ -44,16 +44,17 @@ class Tile extends React.Component {
 
   constructor(props) {
     super(props);
+    this.options = getOptions(Object.assign(this.options, this.props));
     this.addLayer = this.addLayer.bind(this);
     this.removeLayer = this.removeLayer.bind(this);
   }
 
-  addLayer(map, props) {
+  addLayer() {
+    const { map } = this.props;
     if (!map) return;
-    let options = getOptions(Object.assign(this.options, props));
-    let events = getEvents(this.events, props);
-    options.source = options.source || new source.OSM();
-    this.layer = new layer.Tile(options);
+    let events = getEvents(this.events, this.props);
+    this.options.source = this.options.source || new source.OSM();
+    this.layer = new layer.Tile(this.options);
     map.addLayer(this.layer);
 
     for (let event in events) {
@@ -61,28 +62,28 @@ class Tile extends React.Component {
     }
   }
 
-  removeLayer(map) {
+  removeLayer() {
+    const { map } = this.props;
     if (!map) return;
     map.removeLayer(this.layer);
   }
 
   componentDidMount() {
-    this.addLayer(this.context.map);
+    this.addLayer();
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const map = this.context.map || nextContext.map;
-    if (
-      // !isEqual(nextProps.props, this.props.props) ||
-      nextContext.map !== this.context.map
-    ) {
-      this.removeLayer(map);
-      this.addLayer(map, nextProps);
+  componentDidUpdate(prevProps) {
+    const { map } = this.props;
+    if (map && !prevProps.map) {
+      this.addLayer();
+    } else if (map !== prevProps.map) {
+      this.removeLayer();
+      this.addLayer();
     }
   }
 
   componentWillUnmount() {
-    this.removeLayer(this.context.map);
+    this.removeLayer();
   }
 
   render() {
@@ -90,6 +91,4 @@ class Tile extends React.Component {
   }
 }
 
-Tile.contextType = MapContext;
-
-export default Tile;
+export default withMapContext(Tile);

@@ -4,6 +4,7 @@ if (__CLIENT__) {
   openlayers = {
     ol: require('ol'),
     control: require('ol/control'),
+    coordinate: require('ol/coordinate'),
     extent: require('ol/extent'),
     format: require('ol/format'),
     interaction: require('ol/interaction'),
@@ -13,6 +14,7 @@ if (__CLIENT__) {
     source: require('ol/source'),
     style: require('ol/style'),
     tilegrid: require('ol/tilegrid'),
+    Overlay: require('ol/Overlay').default,
   };
 }
 
