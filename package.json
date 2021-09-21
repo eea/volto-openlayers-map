@@ -17,7 +17,7 @@
     "url": "git@github.com:eea/volto-openlayers-map.git"
   },
   "dependencies": {
-    "ol": "^6.5.0"
+    "ol": "6.6.x"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

@@ -85,8 +85,6 @@ class Map extends React.Component {
     let controls = findChild(this.props.children, Controls) || {};
     let interactions = findChild(this.props.children, Interactions) || {};
 
-    console.log('HERE', controls.props);
-
     options.controls = control.defaults(controls.props).extend(this.controls);
     options.interactions = interaction
       .defaults(interactions.props)
