@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { getOptions, assign } from '../helpers';
+import { withMapContext } from '../hocs';
 /**
  * Implementation of ol/control https://openlayers.org/en/latest/apidoc/module-ol_control.html
  *
@@ -9,8 +10,27 @@ import React from 'react';
  * </Map>
  */
 
-const Controls = (props) => {
-  return <>{props.children}</>;
-};
+class Controls extends React.Component {
+  options = {
+    attribution: undefined,
+    attributionOptions: undefined,
+    rotate: undefined,
+    rotateOptions: undefined,
+    zoom: undefined,
+    zoomOptions: undefined,
+  };
 
-export default Controls;
+  componentDidMount() {
+    const { mapRendered, setControlsDefaults } = this.props;
+
+    if (!mapRendered) {
+      setControlsDefaults(getOptions(assign(this.options, this.props)));
+    }
+  }
+
+  render() {
+    return <>{this.props.children}</>;
+  }
+}
+
+export default withMapContext(Controls);

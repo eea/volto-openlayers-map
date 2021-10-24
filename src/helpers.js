@@ -68,3 +68,13 @@ export function isEqual(arg1, arg2) {
     return false;
   }
 }
+
+export function assign(target, sources) {
+  let newTarget = {};
+
+  Object.keys(target).forEach((key) => {
+    newTarget[key] = sources[key];
+  });
+
+  return newTarget;
+}

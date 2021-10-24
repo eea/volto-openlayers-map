@@ -1,9 +1,7 @@
 import React from 'react';
 import MapContext from './MapContext';
-import { Controls } from '../Controls';
-import { Interactions } from '../Interactions';
 import { openlayers } from '..';
-import { getOptions, getEvents, findChild, isEqual } from '../helpers';
+import { getOptions, getEvents, isEqual, assign } from '../helpers';
 import '../less/map.less';
 
 /**
@@ -22,13 +20,16 @@ import '../less/map.less';
  */
 
 const { ol, control, interaction } = openlayers;
-class Map extends React.Component {
+class Map extends React.PureComponent {
   mapRef = undefined;
 
   controls = [];
   interactions = [];
   layers = [];
   overlays = [];
+
+  controlsDefaults = {};
+  interactionsDefaults = {};
 
   options = {
     renderer: undefined,
@@ -67,14 +68,20 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.init = this.init.bind(this);
+    this.addControl = this.addControl.bind(this);
+    this.addInteraction = this.addInteraction.bind(this);
+    this.addLayer = this.addLayer.bind(this);
+    this.addOverlay = this.addOverlay.bind(this);
+    this.setInteractionsDefaults = this.setInteractionsDefaults.bind(this);
+    this.setControlsDefaults = this.setControlsDefaults.bind(this);
+    this.addOverlay = this.addOverlay.bind(this);
     this.updateView = this.updateView.bind(this);
-    this.state = {
-      map: undefined,
-    };
+    this.map = null;
+    this.mapRendered = false;
   }
 
   init() {
-    let options = getOptions(Object.assign(this.options, this.props));
+    let options = getOptions(assign(this.options, this.props));
 
     options.target = options.target || this.mapRef;
 
@@ -82,23 +89,47 @@ class Map extends React.Component {
       options.view = new ol.View(options.view);
     }
 
-    let controls = findChild(this.props.children, Controls) || {};
-    let interactions = findChild(this.props.children, Interactions) || {};
-
-    options.controls = control.defaults(controls.props).extend(this.controls);
+    options.controls = control
+      .defaults(this.controlsDefaults)
+      .extend(this.controls);
     options.interactions = interaction
-      .defaults(interactions.props)
+      .defaults(this.interactionsDefaults)
       .extend(this.interactions);
 
     options.layers = this.layers;
     options.overlays = this.overlays;
 
-    this.setState({ map: new ol.Map(options) }, () => {
-      let events = getEvents(this.events, this.props);
-      for (let event in events) {
-        this.state.map.on(event, events[event]);
-      }
-    });
+    this.map = new ol.Map(options);
+    this.mapRendered = true;
+
+    let events = getEvents(this.events, this.props);
+    for (let event in events) {
+      this.map.on(event, events[event]);
+    }
+  }
+
+  addControl(control) {
+    this.controls.push(control);
+  }
+
+  addInteraction(interaction) {
+    this.interactions.push(interaction);
+  }
+
+  addLayer(layer) {
+    this.layers.push(layer);
+  }
+
+  addOverlay(overlay) {
+    this.overlays.push(overlay);
+  }
+
+  setControlsDefaults(data) {
+    this.controlsDefaults = { ...data };
+  }
+
+  setInteractionsDefaults(data) {
+    this.interactionsDefaults = { ...data };
   }
 
   updateView(nextProps) {
@@ -111,7 +142,7 @@ class Map extends React.Component {
       zoom = undefined,
       extent = undefined,
     } = nextProps;
-    const view = this.state.map.getView();
+    const view = this.map.getView();
     // Update center
     if (
       center &&
@@ -172,21 +203,44 @@ class Map extends React.Component {
   }
 
   componentWillUnmount() {
-    if (__SERVER__ || !this.state.map) return;
-    this.state.map.setTarget(undefined);
+    if (__SERVER__ || !this.map) return;
+    this.map.dispose();
+    this.map = null;
+    this.mapRendered = false;
   }
 
   componentWillReceiveProps(nextProps) {
-    if (__SERVER__ || !this.state.map) return;
+    if (__SERVER__ || !this.map) return;
     this.updateView(nextProps);
   }
 
   render() {
+    const MapContent = this.props.children;
+
     if (__SERVER__) return;
     return (
-      <MapContext.Provider value={{ map: this.state.map }}>
+      <MapContext.Provider
+        value={{
+          map: this.map,
+          mapRendered: this.mapRendered,
+          controls: this.controls,
+          interactions: this.interactions,
+          layers: this.layers,
+          overlays: this.overlays,
+          addControl: this.addControl,
+          addInteraction: this.addInteraction,
+          addLayer: this.addLayer,
+          addOverlay: this.addOverlay,
+          setControlsDefaults: this.setControlsDefaults,
+          setInteractionsDefaults: this.setInteractionsDefaults,
+        }}
+      >
         <div className="ol-map" ref={(el) => (this.mapRef = el)}>
-          {this.props.children}
+          {this.props.children?.render ? (
+            <MapContent {...this.props} />
+          ) : (
+            this.props.children
+          )}
         </div>
       </MapContext.Provider>
     );

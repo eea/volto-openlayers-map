@@ -1,9 +1,7 @@
 import React from 'react';
 
-class Layers extends React.Component {
-  render() {
-    return <>{this.props.children}</>;
-  }
-}
+const Layers = (props) => {
+  return <>{props.children}</>;
+};
 
 export default Layers;

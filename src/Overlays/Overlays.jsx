@@ -1,5 +1,7 @@
 import React from 'react';
-import { getOptions, getEvents } from '../helpers';
+import { Portal } from 'react-portal';
+import _uniqueId from 'lodash/uniqueId';
+import { getOptions, getEvents, assign } from '../helpers';
 import { openlayers } from '..';
 import { withMapContext } from '../hocs';
 
@@ -36,55 +38,60 @@ class Overlays extends React.Component {
 
   constructor(props) {
     super(props);
-    this.options = getOptions(Object.assign(this.options, this.props));
+    this.options = getOptions(assign(this.options, this.props));
+    this.addOverlay = this.addOverlay.bind(this);
     this.element = React.createRef();
+    this.state = {
+      id: null,
+    };
   }
 
   addOverlay() {
-    const { map } = this.props;
-    if (!map) return;
-    let options = {
-      ...getOptions(Object.assign(this.options, this.props)),
-      element: this.element.current,
-    };
-    let events = getEvents(this.events, this.props);
-    this.overlay = new Overlay(options);
-    map.addOverlay(this.overlay);
+    const { map, mapRendered } = this.props;
+    const id = this.props.id || _uniqueId('ol-overlay-');
 
+    const element = document.createElement('div');
+    element.setAttribute('id', id);
+
+    let options = {
+      ...getOptions(assign(this.options, this.props)),
+      element,
+    };
+
+    this.overlay = new Overlay(options);
+
+    let events = getEvents(this.events, this.props);
     for (let event in events) {
       this.overlay.on(event, events[event]);
     }
-  }
 
-  removeOverlay() {
-    const { map } = this.props;
-    if (!map) return;
-    map.removeOverlay(this.overlay);
+    if (!mapRendered) {
+      this.props.addOverlay(this.overlay);
+    } else {
+      map.addOverlay(this.overlay);
+    }
+
+    this.setState({ id });
   }
 
   componentDidMount() {
     this.addOverlay();
   }
 
-  componentDidUpdate(prevProps) {
-    const { map } = this.props;
-    if (map && !prevProps.map) {
-      this.addOverlay();
-    } else if (map !== prevProps.map) {
-      this.removeOverlay();
-      this.addOverlay();
-    }
-  }
-
   componentWillUnmount() {
-    this.removeOverlay();
+    const { map, mapRendered } = this.props;
+    if (__SERVER__ || !mapRendered) return;
+    map.removeOverlay(this.overlay);
   }
 
   render() {
-    const children = React.cloneElement(this.props.children, {
-      ref: this.element,
-    });
-    return children;
+    return this.state.id && this.props.children ? (
+      <Portal node={document.querySelector(`#${this.state.id}`)}>
+        {this.props.children}
+      </Portal>
+    ) : (
+      ''
+    );
   }
 }
 
