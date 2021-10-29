@@ -1,6 +1,6 @@
 import React from 'react';
 import { openlayers } from '..';
-import { getOptions, getEvents } from '../helpers';
+import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
 
 const { layer, source } = openlayers;
@@ -44,50 +44,34 @@ class Tile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.options = getOptions(Object.assign(this.options, this.props));
+    this.options = getOptions(assign(this.options, this.props));
     this.addLayer = this.addLayer.bind(this);
-    this.removeLayer = this.removeLayer.bind(this);
   }
 
   addLayer() {
-    const { map } = this.props;
-    if (!map) return;
+    const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
     this.options.source = this.options.source || new source.OSM();
     this.layer = new layer.Tile(this.options);
-    map.addLayer(this.layer);
-
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
-  }
-
-  removeLayer() {
-    const { map } = this.props;
-    if (!map) return;
-    map.removeLayer(this.layer);
+    if (!mapRendered) {
+      this.props.addLayer(this.layer);
+    }
   }
 
   componentDidMount() {
     this.addLayer();
   }
 
-  componentDidUpdate(prevProps) {
-    const { map } = this.props;
-    if (map && !prevProps.map) {
-      this.addLayer();
-    } else if (map !== prevProps.map) {
-      this.removeLayer();
-      this.addLayer();
-    }
-  }
-
   componentWillUnmount() {
-    this.removeLayer();
+    if (__SERVER__ || !this.layer) return;
+    this.layer.dispose();
   }
 
   render() {
-    return null;
+    return '';
   }
 }
 

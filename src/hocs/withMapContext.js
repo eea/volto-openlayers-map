@@ -5,7 +5,7 @@ const withMapContext = (WrappedComponent) =>
   React.forwardRef((props, ref) => {
     const context = useContext(MapContext);
 
-    return <WrappedComponent {...props} map={context.map} ref={ref} />;
+    return <WrappedComponent {...props} {...context} ref={ref} />;
   });
 
 export default withMapContext;
