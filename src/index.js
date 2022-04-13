@@ -7,6 +7,7 @@ if (__CLIENT__) {
     coordinate: require('ol/coordinate'),
     extent: require('ol/extent'),
     format: require('ol/format'),
+    geom: require('ol/geom'),
     interaction: require('ol/interaction'),
     layer: require('ol/layer'),
     loadingstrategy: require('ol/loadingstrategy'),
