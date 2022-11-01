@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-openlayers-map",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "@eeacms/volto-openlayers-map: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
