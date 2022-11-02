@@ -36,7 +36,7 @@ class Map extends React.PureComponent {
     keyboardEventTarget: undefined,
     maxTilesLoading: undefined,
     moveTolerance: undefined,
-    pixelRation: undefined,
+    pixelRatio: undefined,
     view: new ol.View({ center: [0, 0], zoom: 3 }),
     controls: undefined,
     interactions: undefined,
@@ -82,26 +82,20 @@ class Map extends React.PureComponent {
 
   init() {
     let options = getOptions(assign(this.options, this.props));
-
     options.target = options.target || this.mapRef;
-
     if (!(options.view instanceof ol.View)) {
       options.view = new ol.View(options.view);
     }
-
     options.controls = control
       .defaults(this.controlsDefaults)
       .extend(this.controls);
     options.interactions = interaction
       .defaults(this.interactionsDefaults)
       .extend(this.interactions);
-
     options.layers = this.layers;
     options.overlays = this.overlays;
-
     this.map = new ol.Map(options);
     this.mapRendered = true;
-
     let events = getEvents(this.events, this.props);
     for (let event in events) {
       this.map.on(event, events[event]);
