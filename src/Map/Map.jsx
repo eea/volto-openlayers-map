@@ -102,12 +102,12 @@ class Map extends React.PureComponent {
     }
   }
 
-  addControl(control) {
-    this.controls.push(control);
+  addControl(_control) {
+    this.controls.push(_control);
   }
 
-  addInteraction(interaction) {
-    this.interactions.push(interaction);
+  addInteraction(_interaction) {
+    this.interactions.push(_interaction);
   }
 
   addLayer(layer) {
