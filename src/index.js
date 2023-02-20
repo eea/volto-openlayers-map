@@ -16,6 +16,8 @@ if (__CLIENT__) {
     style: require('ol/style'),
     tilegrid: require('ol/tilegrid'),
     Overlay: require('ol/Overlay').default,
+    events: require('ol/events'),
+    condition: require('ol/events/condition'),
   };
 }
 
