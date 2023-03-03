@@ -1,3 +1,3 @@
-import withMapContext from './withMapContext';
+import withMapContext, { useMapContext } from './withMapContext';
 
-export { withMapContext };
+export { useMapContext, withMapContext };

@@ -4,7 +4,7 @@ pipeline {
   environment {
         GIT_NAME = "volto-openlayers-map"
         NAMESPACE = "@eeacms"
-        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu"
+        SONARQUBE_TAGS = "volto.eea.europa.eu,biodiversity.europa.eu,climate-adapt.eea.europa.eu"
         DEPENDENCIES = ""
         VOLTO = "alpha"
     }
