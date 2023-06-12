@@ -1,7 +1,8 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 import MapContext from './MapContext';
 import { openlayers } from '..';
-import { getOptions, getEvents, isEqual, assign } from '../helpers';
+import { getOptions, getEvents, assign } from '../helpers';
 import '../less/map.less';
 
 /**
@@ -31,18 +32,33 @@ class Map extends React.PureComponent {
   controlsDefaults = {};
   interactionsDefaults = {};
 
-  options = {
+  defaultViewOptions = {
+    center: undefined,
+    maxZoom: undefined,
+    minZoom: undefined,
+    resolution: undefined,
+    rotation: undefined,
+    zoom: undefined,
+    extent: undefined,
+  };
+
+  defaultOptions = {
     renderer: undefined,
     keyboardEventTarget: undefined,
     maxTilesLoading: undefined,
     moveTolerance: undefined,
     pixelRatio: undefined,
-    view: new ol.View({ center: [0, 0], zoom: 3 }),
+    view:
+      typeof window !== 'undefined'
+        ? new ol.View({ center: [0, 0], zoom: 3 })
+        : null,
     controls: undefined,
     interactions: undefined,
     layers: undefined,
     overlays: undefined,
   };
+
+  options = {};
 
   events = {
     'change:layerGroup': undefined,
@@ -75,27 +91,36 @@ class Map extends React.PureComponent {
     this.setInteractionsDefaults = this.setInteractionsDefaults.bind(this);
     this.setControlsDefaults = this.setControlsDefaults.bind(this);
     this.addOverlay = this.addOverlay.bind(this);
+    this.updateMap = this.updateMap.bind(this);
     this.updateView = this.updateView.bind(this);
     this.map = null;
     this.mapRendered = false;
   }
 
   init() {
-    let options = getOptions(assign(this.options, this.props));
+    let options = getOptions(assign(this.defaultOptions, this.props));
+    // Set target
     options.target = options.target || this.mapRef;
+    // Set view
     if (!(options.view instanceof ol.View)) {
       options.view = new ol.View(options.view);
     }
+    // Set controls
     options.controls = control
       .defaults(this.controlsDefaults)
       .extend(this.controls);
+    // Set interactions
     options.interactions = interaction
       .defaults(this.interactionsDefaults)
       .extend(this.interactions);
+    // Set layers
     options.layers = this.layers;
+    // Set overlays
     options.overlays = this.overlays;
+    // Initiate map
     this.map = new ol.Map(options);
     this.mapRendered = true;
+    // Set events
     let events = getEvents(this.events, this.props);
     for (let event in events) {
       this.map.on(event, events[event]);
@@ -126,92 +151,62 @@ class Map extends React.PureComponent {
     this.interactionsDefaults = { ...data };
   }
 
-  updateView(nextProps) {
-    const {
-      center = undefined,
-      maxZoom = undefined,
-      minZoom = undefined,
-      resolution = undefined,
-      rotation = undefined,
-      zoom = undefined,
-      extent = undefined,
-    } = nextProps;
+  updateMap() {
+    if (!this.map) return;
+    Object.keys(this.options).forEach((key) => {
+      const prevValue = this.map.get(key);
+      const value = this.options[key];
+      if (key === 'view') {
+        this.updateView();
+        return;
+      }
+      if (value === prevValue) return;
+      this.map.set(key, this.options[key]);
+    });
+  }
+
+  updateView() {
+    const viewOptions = getOptions(
+      assign(this.defaultViewOptions, this.options.view || {}),
+    );
+
     const view = this.map.getView();
-    // Update center
-    if (
-      center &&
-      !isEqual(center, this.props.center) &&
-      !isEqual(center, view.getCenter())
-    ) {
-      view.setCenter(center);
-    }
-    // Update max zoom
-    if (
-      maxZoom &&
-      !isEqual(maxZoom, this.props.maxZoom) &&
-      !isEqual(maxZoom, view.getMaxZoom())
-    ) {
-      view.setMaxZoom(maxZoom);
-    }
-    // Update min zoom
-    if (
-      minZoom &&
-      !isEqual(minZoom, this.props.minZoom) &&
-      !isEqual(minZoom, view.getMinZoom())
-    ) {
-      view.setMinZoom(minZoom);
-    }
-    // Update resolution
-    if (
-      resolution &&
-      !isEqual(resolution, this.props.resolution) &&
-      !isEqual(resolution, view.getResolution())
-    ) {
-      view.setResolution(resolution);
-    }
-    // Update rotation
-    if (
-      rotation &&
-      !isEqual(rotation, this.props.rotation) &&
-      !isEqual(rotation, view.getRotation())
-    ) {
-      view.setRotation(rotation);
-    }
-    // Update zoom
-    if (
-      zoom &&
-      !isEqual(zoom, this.props.zoom) &&
-      !isEqual(zoom, view.getZoom())
-    ) {
-      view.setZoom(zoom);
-    }
-    // Fit extent
-    if (extent && !isEqual(extent, this.props.extent)) {
-      view.fit(extent);
-    }
+
+    Object.keys(viewOptions).forEach((key) => {
+      const prevValue = view.get(key);
+      const value = viewOptions[key];
+      if (value === prevValue) return;
+      if (key === 'extent') {
+        view.fit(value);
+        return;
+      }
+      view.set(key, value);
+    });
   }
 
   componentDidMount() {
-    if (__SERVER__ || !this.mapRef) return;
+    if (!this.mapRef) return;
     this.init();
   }
 
   componentWillUnmount() {
-    if (__SERVER__ || !this.map) return;
+    if (!this.map) return;
     this.map.dispose();
     this.map = null;
     this.mapRendered = false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (__SERVER__ || !this.map) return;
-    this.updateView(nextProps);
+  componentDidUpdate() {
+    const newOptions = getOptions(assign(this.defaultOptions, this.props));
+    if (!isEqual(newOptions, this.options)) {
+      this.options = newOptions;
+      this.updateMap();
+    }
   }
 
   render() {
     const MapContent = this.props.children;
 
-    if (__SERVER__) return;
     return (
       <MapContext.Provider
         value={{
@@ -229,12 +224,14 @@ class Map extends React.PureComponent {
           setInteractionsDefaults: this.setInteractionsDefaults,
         }}
       >
-        <div className="ol-map" ref={(el) => (this.mapRef = el)}>
-          {this.props.children?.render ? (
-            <MapContent {...this.props} />
-          ) : (
-            this.props.children
-          )}
+        <div className="ol-map-wrapper">
+          <div className="ol-map" ref={(el) => (this.mapRef = el)}>
+            {this.props.children?.render ? (
+              <MapContent {...this.props} />
+            ) : (
+              this.props.children
+            )}
+          </div>
         </div>
       </MapContext.Provider>
     );

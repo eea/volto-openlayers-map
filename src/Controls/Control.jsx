@@ -58,7 +58,7 @@ class Control extends React.Component {
 
   componentWillUnmount() {
     const { map, mapRendered } = this.props;
-    if (__SERVER__ || !mapRendered) return;
+    if (!mapRendered) return;
     map.removeControl(this.control);
   }
 

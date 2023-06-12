@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 import { openlayers } from '..';
 import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
@@ -8,7 +9,7 @@ const { layer } = openlayers;
 class VectorImage extends React.Component {
   layer = undefined;
 
-  options = {
+  defaultOptions = {
     className: undefined,
     declutter: undefined,
     extent: undefined,
@@ -26,6 +27,8 @@ class VectorImage extends React.Component {
     visible: undefined,
     zIndex: undefined,
   };
+
+  options = {};
 
   events = {
     'change:extent': undefined,
@@ -46,8 +49,9 @@ class VectorImage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.options = getOptions(assign(this.options, this.props));
+    this.options = getOptions(assign(this.defaultOptions, this.props));
     this.addLayer = this.addLayer.bind(this);
+    this.updateLayer = this.updateLayer.bind(this);
   }
 
   addLayer() {
@@ -62,13 +66,32 @@ class VectorImage extends React.Component {
     }
   }
 
+  updateLayer() {
+    if (!this.layer) return;
+    Object.keys(this.options).forEach((key) => {
+      const prevValue = this.layer.get(key);
+      const value = this.options[key];
+      if (value === prevValue) return;
+      this.layer.set(key, this.options[key]);
+    });
+  }
+
   componentDidMount() {
     this.addLayer();
   }
 
   componentWillUnmount() {
-    if (__SERVER__ || !this.layer) return;
+    if (!this.layer) return;
     this.layer.dispose();
+    this.layer = null;
+  }
+
+  componentDidUpdate() {
+    const newOptions = getOptions(assign(this.defaultOptions, this.props));
+    if (!isEqual(newOptions, this.options)) {
+      this.options = newOptions;
+      this.updateLayer();
+    }
   }
 
   render() {

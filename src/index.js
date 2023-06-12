@@ -25,6 +25,13 @@ const applyConfig = (config) => {
   return config;
 };
 
+// export const debounce = (timer, func) => {
+//   return (event) => {
+//     if (timer) clearTimeout(timer);
+//     timer = setTimeout(func, 0, event);
+//   };
+// };
+
 export { openlayers };
 
 export default applyConfig;

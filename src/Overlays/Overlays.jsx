@@ -80,7 +80,7 @@ class Overlays extends React.Component {
 
   componentWillUnmount() {
     const { map, mapRendered } = this.props;
-    if (__SERVER__ || !mapRendered) return;
+    if (!mapRendered) return;
     map.removeOverlay(this.overlay);
   }
 
