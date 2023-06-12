@@ -6,29 +6,23 @@ import { withMapContext } from '../hocs';
 
 const { layer } = openlayers;
 
-class WebGLPoints extends React.Component {
+class Image extends React.Component {
   layer = undefined;
 
-  deafaultOptions = {
+  options = {
     className: undefined,
-    declutter: undefined,
     extent: undefined,
-    imageRatio: undefined,
     map: undefined,
     maxResolution: undefined,
     maxZoom: undefined,
     minResolution: undefined,
     minZoom: undefined,
     opacity: undefined,
-    renderBuffer: undefined,
-    renderOrder: undefined,
+    preload: undefined,
     source: undefined,
-    style: undefined,
     visible: undefined,
     zIndex: undefined,
   };
-
-  options = {};
 
   events = {
     'change:extent': undefined,
@@ -37,19 +31,20 @@ class WebGLPoints extends React.Component {
     'change:minResolution': undefined,
     'change:minZoom': undefined,
     'change:opacity': undefined,
+    'change:preload': undefined,
     'change:source': undefined,
     'change:visible': undefined,
     'change:zIndex': undefined,
-    change: undefined,
     error: undefined,
     postrender: undefined,
-    prerender: undefined,
+    precompose: undefined,
     propertychange: undefined,
   };
 
   constructor(props) {
     super(props);
-    this.options = getOptions(assign(this.deafaultOptions, this.props));
+    this.defaultOptions = this.options;
+    this.options = getOptions(assign(this.options, this.props));
     this.addLayer = this.addLayer.bind(this);
     this.updateLayer = this.updateLayer.bind(this);
   }
@@ -57,7 +52,7 @@ class WebGLPoints extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.layer = new layer.WebGLPoints(this.options);
+    this.layer = new layer.Image(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -80,23 +75,23 @@ class WebGLPoints extends React.Component {
     this.addLayer();
   }
 
-  componentDidUpdate() {
-    const newOptions = getOptions(assign(this.deafaultOptions, this.props));
-    if (!isEqual(newOptions, this.options)) {
-      this.options = newOptions;
-      this.updateLayer();
-    }
-  }
-
   componentWillUnmount() {
     if (!this.layer) return;
     this.layer.dispose();
     this.layer = null;
   }
 
+  componentDidUpdate() {
+    const newOptions = getOptions(assign(this.defaultOptions, this.props));
+    if (!isEqual(newOptions, this.options)) {
+      this.options = newOptions;
+      this.updateLayer();
+    }
+  }
+
   render() {
-    return null;
+    return '';
   }
 }
 
-export default withMapContext(WebGLPoints);
+export default withMapContext(Image);

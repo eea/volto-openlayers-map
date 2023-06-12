@@ -61,14 +61,6 @@ export function findChild(children, childType) {
   return found;
 }
 
-export function isEqual(arg1, arg2) {
-  try {
-    return JSON.stringify(arg1) === JSON.stringify(arg2);
-  } catch {
-    return false;
-  }
-}
-
 export function assign(target, sources) {
   let newTarget = {};
 
