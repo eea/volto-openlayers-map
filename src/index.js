@@ -18,6 +18,7 @@ if (__CLIENT__) {
     Overlay: require('ol/Overlay').default,
     events: require('ol/events'),
     condition: require('ol/events/condition'),
+    render: require('ol/render'),
   };
 }
 
