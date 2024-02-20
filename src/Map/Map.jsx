@@ -95,6 +95,7 @@ class Map extends React.PureComponent {
     this.updateView = this.updateView.bind(this);
     this.map = null;
     this.mapRendered = false;
+    this.state = { map: null };
   }
 
   init() {
@@ -125,6 +126,9 @@ class Map extends React.PureComponent {
     for (let event in events) {
       this.map.on(event, events[event]);
     }
+
+    // this is needed, to cause the MapContext to refresh with a new value and the proper reference to this.map
+    this.setState({ map: this.map });
   }
 
   addControl(control) {
