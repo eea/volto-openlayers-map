@@ -1,10 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { openlayers } from '..';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
-
-const { layer } = openlayers;
 
 class Heatmap extends React.Component {
   layer = undefined;
@@ -57,7 +55,7 @@ class Heatmap extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.layer = new layer.HeatmapLayer(this.options);
+    this.layer = new this.props.olLayer.HeatmapLayer(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -99,4 +97,4 @@ class Heatmap extends React.Component {
   }
 }
 
-export default withMapContext(Heatmap);
+export default injectLazyLibs(['olLayer'])(withMapContext(Heatmap));

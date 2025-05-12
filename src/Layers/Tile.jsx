@@ -1,10 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { openlayers } from '..';
 import { getOptions, getEvents, assign } from '../helpers';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { withMapContext } from '../hocs';
-
-const { layer, source } = openlayers;
 
 class Tile extends React.Component {
   layer = undefined;
@@ -55,8 +53,8 @@ class Tile extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.options.source = this.options.source || new source.OSM();
-    this.layer = new layer.Tile(this.options);
+    this.options.source = this.options.source || new this.props.olSource.OSM();
+    this.layer = new this.props.olLayer.Tile(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -98,4 +96,4 @@ class Tile extends React.Component {
   }
 }
 
-export default withMapContext(Tile);
+export default injectLazyLibs(['olLayer', 'olSource'])(withMapContext(Tile));

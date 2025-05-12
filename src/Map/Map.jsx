@@ -1,8 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import MapContext from './MapContext';
-import { openlayers } from '..';
 import { getOptions, getEvents, assign } from '../helpers';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import '../less/map.less';
 
 /**
@@ -20,7 +20,7 @@ import '../less/map.less';
  * </Map>
  */
 
-const { ol, control, interaction } = openlayers;
+// const { ol, control, interaction } = openlayers;
 class Map extends React.PureComponent {
   mapRef = undefined;
 
@@ -50,7 +50,7 @@ class Map extends React.PureComponent {
     pixelRatio: undefined,
     view:
       typeof window !== 'undefined'
-        ? new ol.View({ center: [0, 0], zoom: 3 })
+        ? new this.props.ol.View({ center: [0, 0], zoom: 3 })
         : null,
     controls: undefined,
     interactions: undefined,
@@ -103,15 +103,15 @@ class Map extends React.PureComponent {
     // Set target
     options.target = options.target || this.mapRef;
     // Set view
-    if (!(options.view instanceof ol.View)) {
-      options.view = new ol.View(options.view);
+    if (!(options.view instanceof this.props.ol.View)) {
+      options.view = new this.props.ol.View(options.view);
     }
     // Set controls
-    options.controls = control
+    options.controls = this.props.olControl
       .defaults(this.controlsDefaults)
       .extend(this.controls);
     // Set interactions
-    options.interactions = interaction
+    options.interactions = this.props.olInteraction
       .defaults(this.interactionsDefaults)
       .extend(this.interactions);
     // Set layers
@@ -119,7 +119,7 @@ class Map extends React.PureComponent {
     // Set overlays
     options.overlays = this.overlays;
     // Initiate map
-    this.map = new ol.Map(options);
+    this.map = new this.props.ol.Map(options);
     this.mapRendered = true;
     // Set events
     let events = getEvents(this.events, this.props);
@@ -242,4 +242,4 @@ class Map extends React.PureComponent {
   }
 }
 
-export default Map;
+export default injectLazyLibs(['ol', 'olInteraction', 'olControl'])(Map);
