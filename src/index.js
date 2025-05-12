@@ -1,38 +1,30 @@
-let openlayers = {};
-
-if (__CLIENT__) {
-  openlayers = {
-    ol: require('ol'),
-    control: require('ol/control'),
-    coordinate: require('ol/coordinate'),
-    extent: require('ol/extent'),
-    format: require('ol/format'),
-    geom: require('ol/geom'),
-    interaction: require('ol/interaction'),
-    layer: require('ol/layer'),
-    loadingstrategy: require('ol/loadingstrategy'),
-    proj: require('ol/proj'),
-    source: require('ol/source'),
-    style: require('ol/style'),
-    tilegrid: require('ol/tilegrid'),
-    Overlay: require('ol/Overlay').default,
-    events: require('ol/events'),
-    condition: require('ol/events/condition'),
-    render: require('ol/render'),
-  };
-}
+import loadable from '@loadable/component';
 
 const applyConfig = (config) => {
+  config.settings.loadables = {
+    ...config.settings.loadables,
+
+    ol: loadable.lib(() => import('ol')),
+    olControl: loadable.lib(() => import('ol/control')),
+    olCoordinate: loadable.lib(() => import('ol/coordinate')),
+    olExtent: loadable.lib(() => import('ol/extent')),
+    olFormat: loadable.lib(() => import('ol/format')),
+    olGeom: loadable.lib(() => import('ol/geom')),
+    olInteraction: loadable.lib(() => import('ol/interaction')),
+    olLayer: loadable.lib(() => import('ol/layer')),
+    olLoadingstrategy: loadable.lib(() => import('ol/loadingstrategy')),
+    olProj: loadable.lib(() => import('ol/proj')),
+    olSource: loadable.lib(() => import('ol/source')),
+    olStyle: loadable.lib(() => import('ol/style')),
+    olTilegrid: loadable.lib(() => import('ol/tilegrid')),
+    olOverlay: loadable.lib(() => import('ol/Overlay').default),
+    olEvents: loadable.lib(() => import('ol/events')),
+    olCondition: loadable.lib(() => import('ol/events/condition')),
+    olRender: loadable.lib(() => import('ol/render')),
+
+    // olMapboxStyle: loadable.lib(() => import('ol-mapbox-style')),
+  };
   return config;
 };
-
-// export const debounce = (timer, func) => {
-//   return (event) => {
-//     if (timer) clearTimeout(timer);
-//     timer = setTimeout(func, 0, event);
-//   };
-// };
-
-export { openlayers };
 
 export default applyConfig;

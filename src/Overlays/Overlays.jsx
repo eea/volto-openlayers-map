@@ -1,11 +1,9 @@
 import React from 'react';
 import { Portal } from 'react-portal';
 import _uniqueId from 'lodash/uniqueId';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { getOptions, getEvents, assign } from '../helpers';
-import { openlayers } from '..';
 import { withMapContext } from '../hocs';
-
-const { Overlay } = openlayers;
 
 /**
  * Implementation of ol/interaction https://openlayers.org/en/latest/apidoc/module-ol_Overlay-Overlay.html
@@ -58,7 +56,7 @@ class Overlays extends React.Component {
       element,
     };
 
-    this.overlay = new Overlay(options);
+    this.overlay = new this.props.olOverlay(options);
 
     let events = getEvents(this.events, this.props);
     for (let event in events) {
@@ -95,4 +93,4 @@ class Overlays extends React.Component {
   }
 }
 
-export default withMapContext(Overlays);
+export default injectLazyLibs(['olOverlay'])(withMapContext(Overlays));

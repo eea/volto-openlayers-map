@@ -2,7 +2,7 @@ import React from 'react';
 import { Portal } from 'react-portal';
 import _uniqueId from 'lodash/uniqueId';
 import cs from 'classnames';
-import { openlayers } from '..';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { getOptions, assign } from '../helpers';
 import { withMapContext } from '../hocs';
 
@@ -41,7 +41,7 @@ class Control extends React.Component {
       element,
     };
 
-    this.control = new openlayers.control.Control(options);
+    this.control = new this.props.olControl.Control(options);
 
     if (!mapRendered) {
       this.props.addControl(this.control);
@@ -73,4 +73,4 @@ class Control extends React.Component {
   }
 }
 
-export default withMapContext(Control);
+export default injectLazyLibs(['olControl'])(withMapContext(Control));
