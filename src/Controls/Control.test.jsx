@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Control from './Control';
 
 jest.mock('react-portal', () => ({
-  Portal: () => null,
+  Portal: ({ children }) => children,
 }));
 
 jest.mock('@plone/volto/helpers/Loadable/Loadable', () => ({
