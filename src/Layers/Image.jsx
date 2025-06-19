@@ -1,10 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { openlayers } from '..';
 import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
-
-const { layer } = openlayers;
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 
 class Image extends React.Component {
   layer = undefined;
@@ -52,7 +50,7 @@ class Image extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.layer = new layer.Image(this.options);
+    this.layer = new this.props.olLayer.Image(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -94,4 +92,4 @@ class Image extends React.Component {
   }
 }
 
-export default withMapContext(Image);
+export default injectLazyLibs(['olLayer'])(withMapContext(Image));

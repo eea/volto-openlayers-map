@@ -4,24 +4,33 @@ import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
 
-class VectorImage extends React.Component {
+class Graticule extends React.Component {
   layer = undefined;
 
   defaultOptions = {
     className: undefined,
-    declutter: undefined,
+    opacity: undefined,
     extent: undefined,
-    imageRatio: undefined,
     map: undefined,
     maxResolution: undefined,
+    maxLines: undefined,
+    strokeStyle: undefined,
+    targetSize: undefined,
+    showLabels: undefined,
+    lonLabelFormatter: undefined,
+    latLabelFormatter: undefined,
+    lonLabelPosition: undefined,
+    latLabelPosition: undefined,
+    lonLabelStyle: undefined,
+    latLabelStyle: undefined,
+    intervals: undefined,
+    wrapX: undefined,
     maxZoom: undefined,
     minResolution: undefined,
     minZoom: undefined,
-    opacity: undefined,
     renderBuffer: undefined,
     renderOrder: undefined,
     source: undefined,
-    style: undefined,
     visible: undefined,
     zIndex: undefined,
   };
@@ -55,7 +64,7 @@ class VectorImage extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.layer = new this.props.olLayer.VectorImage(this.options);
+    this.layer = new this.props.olLayer.Graticule(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -97,4 +106,4 @@ class VectorImage extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(VectorImage));
+export default injectLazyLibs(['olLayer'])(withMapContext(Graticule));

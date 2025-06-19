@@ -1,10 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { openlayers } from '..';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import { getOptions, getEvents, assign } from '../helpers';
 import { withMapContext } from '../hocs';
-
-const { layer } = openlayers;
 
 class WebGLPoints extends React.Component {
   layer = undefined;
@@ -57,7 +55,7 @@ class WebGLPoints extends React.Component {
   addLayer() {
     const { mapRendered } = this.props;
     let events = getEvents(this.events, this.props);
-    this.layer = new layer.WebGLPoints(this.options);
+    this.layer = new this.props.olLayer.WebGLPoints(this.options);
     for (let event in events) {
       this.layer.on(event, events[event]);
     }
@@ -99,4 +97,4 @@ class WebGLPoints extends React.Component {
   }
 }
 
-export default withMapContext(WebGLPoints);
+export default injectLazyLibs(['olLayer'])(withMapContext(WebGLPoints));
