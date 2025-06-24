@@ -56,7 +56,8 @@ class Overlays extends React.Component {
       element,
     };
 
-    this.overlay = new this.props.olOverlay(options);
+    const OverlayClass = this.props.olOverlay?.default || this.props.olOverlay;
+    this.overlay = new OverlayClass(options);
 
     let events = getEvents(this.events, this.props);
     for (let event in events) {
