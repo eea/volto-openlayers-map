@@ -3,16 +3,16 @@
 [![Releases](https://img.shields.io/github/v/release/eea/volto-openlayers-map)](https://github.com/eea/volto-openlayers-map/releases)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-openlayers-map%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-openlayers-map/job/master/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-master)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-master)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-master)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-master)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-openlayers-map%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-openlayers-map/job/develop/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-develop)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-develop)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-develop)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map-develop)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&branch=develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map&branch=develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&branch=develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map&branch=develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&branch=develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map&branch=develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-openlayers-map&branch=develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-openlayers-map&branch=develop)
 
 [Volto](https://github.com/plone/volto) add-on
 
