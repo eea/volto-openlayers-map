@@ -1,4 +1,4 @@
-/* eslint -disable react/jsx-filename-extension */
+/* eslint-disable react/jsx-filename-extension */
 
 import loadable from '@loadable/component';
 import { useLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
