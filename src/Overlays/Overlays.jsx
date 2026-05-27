@@ -94,4 +94,4 @@ class Overlays extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olOverlay'])(withMapContext(Overlays));
+export default injectLazyLibs(['olOverlay'], true)(withMapContext(Overlays));

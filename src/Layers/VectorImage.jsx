@@ -97,4 +97,4 @@ class VectorImage extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(VectorImage));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(VectorImage));

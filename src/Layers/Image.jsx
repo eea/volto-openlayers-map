@@ -92,4 +92,4 @@ class Image extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(Image));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(Image));

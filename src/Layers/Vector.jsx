@@ -98,4 +98,4 @@ class Vector extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(Vector));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(Vector));

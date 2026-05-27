@@ -73,4 +73,4 @@ class Control extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olControl'])(withMapContext(Control));
+export default injectLazyLibs(['olControl'], true)(withMapContext(Control));

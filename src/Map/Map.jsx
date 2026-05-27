@@ -242,4 +242,4 @@ class Map extends React.PureComponent {
   }
 }
 
-export default injectLazyLibs(['ol', 'olInteraction', 'olControl'])(Map);
+export default injectLazyLibs(['ol', 'olInteraction', 'olControl'], true)(Map);

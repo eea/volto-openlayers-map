@@ -96,4 +96,7 @@ class Tile extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer', 'olSource'])(withMapContext(Tile));
+export default injectLazyLibs(
+  ['olLayer', 'olSource'],
+  true,
+)(withMapContext(Tile));
