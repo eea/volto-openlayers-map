@@ -97,4 +97,4 @@ class WebGLPoints extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(WebGLPoints));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(WebGLPoints));

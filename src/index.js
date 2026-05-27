@@ -3,27 +3,32 @@
 import loadable from '@loadable/component';
 import { useLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 
+export const clientOnly = (factory) =>
+  // If we are building the server bundle, return a promise that never resolves.
+  // The loadable stays in a pending state, so injectLazyLibs renders null.
+  loadable.lib(() => (__CLIENT__ ? factory() : new Promise(() => {})));
+
 const applyConfig = (config) => {
   config.settings.loadables = {
     ...config.settings.loadables,
 
-    ol: loadable.lib(() => import('ol')),
-    olControl: loadable.lib(() => import('ol/control')),
-    olCoordinate: loadable.lib(() => import('ol/coordinate')),
-    olExtent: loadable.lib(() => import('ol/extent')),
-    olFormat: loadable.lib(() => import('ol/format')),
-    olGeom: loadable.lib(() => import('ol/geom')),
-    olInteraction: loadable.lib(() => import('ol/interaction')),
-    olLayer: loadable.lib(() => import('ol/layer')),
-    olLoadingstrategy: loadable.lib(() => import('ol/loadingstrategy')),
-    olProj: loadable.lib(() => import('ol/proj')),
-    olSource: loadable.lib(() => import('ol/source')),
-    olStyle: loadable.lib(() => import('ol/style')),
-    olTilegrid: loadable.lib(() => import('ol/tilegrid')),
-    olOverlay: loadable.lib(() => import('ol/Overlay')),
-    olEvents: loadable.lib(() => import('ol/events')),
-    olCondition: loadable.lib(() => import('ol/events/condition')),
-    olRender: loadable.lib(() => import('ol/render')),
+    ol: clientOnly(() => import('ol')),
+    olControl: clientOnly(() => import('ol/control')),
+    olCoordinate: clientOnly(() => import('ol/coordinate')),
+    olExtent: clientOnly(() => import('ol/extent')),
+    olFormat: clientOnly(() => import('ol/format')),
+    olGeom: clientOnly(() => import('ol/geom')),
+    olInteraction: clientOnly(() => import('ol/interaction')),
+    olLayer: clientOnly(() => import('ol/layer')),
+    olLoadingstrategy: clientOnly(() => import('ol/loadingstrategy')),
+    olProj: clientOnly(() => import('ol/proj')),
+    olSource: clientOnly(() => import('ol/source')),
+    olStyle: clientOnly(() => import('ol/style')),
+    olTilegrid: clientOnly(() => import('ol/tilegrid')),
+    olOverlay: clientOnly(() => import('ol/Overlay')),
+    olEvents: clientOnly(() => import('ol/events')),
+    olCondition: clientOnly(() => import('ol/events/condition')),
+    olRender: clientOnly(() => import('ol/render')),
   };
   return config;
 };

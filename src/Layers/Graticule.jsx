@@ -106,4 +106,4 @@ class Graticule extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(Graticule));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(Graticule));

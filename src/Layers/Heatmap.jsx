@@ -97,4 +97,4 @@ class Heatmap extends React.Component {
   }
 }
 
-export default injectLazyLibs(['olLayer'])(withMapContext(Heatmap));
+export default injectLazyLibs(['olLayer'], true)(withMapContext(Heatmap));
